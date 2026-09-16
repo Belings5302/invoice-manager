@@ -1,0 +1,729 @@
+{
+  "users": [
+    {
+      "email": "admin@invoicemanager.com",
+      "password_hash": "$2a$10$JK2uto.4GSElUAIkBXYpj.Fd4iIEdBLUbRRNRl6FCx.hKhwYGMBTK",
+      "name": "Admin User",
+      "role": "admin",
+      "id": 1,
+      "created_at": "2026-09-16T10:31:10.155Z"
+    },
+    {
+      "email": "user@invoicemanager.com",
+      "password_hash": "$2a$10$OWtA4TQoHw84j14wnvT8GeeajdCpAMpfV7oBSZacygdI7vos62F72",
+      "name": "Regular User",
+      "role": "user",
+      "id": 2,
+      "created_at": "2026-09-16T10:31:10.161Z"
+    }
+  ],
+  "clients": [
+    {
+      "name": "Acme Corporation",
+      "email": "billing@acme.com",
+      "phone": "+250 788 100 200",
+      "address": "KG 123 St, Kigali",
+      "company": "Acme Corp",
+      "id": 1,
+      "created_at": "2026-09-16T10:31:10.163Z"
+    },
+    {
+      "name": "TechVentures Ltd",
+      "email": "finance@techventures.rw",
+      "phone": "+250 788 300 400",
+      "address": "KN 45 Ave, Kigali",
+      "company": "TechVentures",
+      "id": 2,
+      "created_at": "2026-09-16T10:31:10.164Z"
+    },
+    {
+      "name": "Green Solutions",
+      "email": "accounts@greensol.rw",
+      "phone": "+250 788 500 600",
+      "address": "KK 78 St, Kigali",
+      "company": "Green Solutions LLC",
+      "id": 3,
+      "created_at": "2026-09-16T10:31:10.166Z"
+    },
+    {
+      "name": "Summit Builders",
+      "email": "pay@summitbuild.rw",
+      "phone": "+250 788 700 800",
+      "address": "KG 90 St, Kigali",
+      "company": "Summit Builders",
+      "id": 4,
+      "created_at": "2026-09-16T10:31:10.167Z"
+    },
+    {
+      "name": "Horizon Media",
+      "email": "billing@horizon.rw",
+      "phone": "+250 788 900 100",
+      "address": "KN 12 Ave, Kigali",
+      "company": "Horizon Media Group",
+      "id": 5,
+      "created_at": "2026-09-16T10:31:10.171Z"
+    }
+  ],
+  "invoices": [
+    {
+      "id": 1,
+      "invoice_number": "INV-001",
+      "client_id": 1,
+      "total_amount": 500000,
+      "amount_paid": 500000,
+      "status": "paid",
+      "issue_date": "2026-06-16",
+      "due_date": "2026-07-16",
+      "notes": "Website development project",
+      "created_at": "2026-09-16T10:31:10.174Z"
+    },
+    {
+      "id": 2,
+      "invoice_number": "INV-002",
+      "client_id": 2,
+      "total_amount": 500000,
+      "amount_paid": 400000,
+      "status": "partial",
+      "issue_date": "2026-08-16",
+      "due_date": "2026-09-26",
+      "notes": "Mobile app development MVP",
+      "created_at": "2026-09-16T10:31:10.182Z"
+    },
+    {
+      "id": 3,
+      "invoice_number": "INV-003",
+      "client_id": 3,
+      "total_amount": 350000,
+      "amount_paid": 0,
+      "status": "overdue",
+      "issue_date": "2026-07-16",
+      "due_date": "2026-08-16",
+      "notes": "Business strategy consulting engagement",
+      "created_at": "2026-09-16T10:31:10.185Z"
+    },
+    {
+      "id": 4,
+      "invoice_number": "INV-004",
+      "client_id": 4,
+      "total_amount": 800000,
+      "amount_paid": 0,
+      "status": "sent",
+      "issue_date": "2026-08-16",
+      "due_date": "2026-10-01",
+      "notes": "Construction project management",
+      "created_at": "2026-09-16T10:31:10.191Z"
+    },
+    {
+      "id": 5,
+      "invoice_number": "INV-005",
+      "client_id": 5,
+      "total_amount": 250000,
+      "amount_paid": 0,
+      "status": "draft",
+      "issue_date": "2026-09-16",
+      "due_date": "2026-10-16",
+      "notes": "Digital marketing campaign",
+      "created_at": "2026-09-16T10:31:10.194Z"
+    },
+    {
+      "id": 6,
+      "invoice_number": "INV-006",
+      "client_id": 1,
+      "total_amount": 650000,
+      "amount_paid": 650000,
+      "status": "paid",
+      "issue_date": "2026-04-16",
+      "due_date": "2026-05-16",
+      "notes": "ERP system setup",
+      "created_at": "2026-09-16T10:31:10.196Z"
+    },
+    {
+      "id": 7,
+      "invoice_number": "INV-007",
+      "client_id": 3,
+      "total_amount": 420000,
+      "amount_paid": 200000,
+      "status": "partial",
+      "issue_date": "2026-08-16",
+      "due_date": "2026-09-23",
+      "notes": "IT infrastructure security audit",
+      "created_at": "2026-09-16T10:31:10.200Z"
+    },
+    {
+      "id": 8,
+      "invoice_number": "INV-008",
+      "client_id": 2,
+      "total_amount": 300000,
+      "amount_paid": 300000,
+      "status": "paid",
+      "issue_date": "2026-05-16",
+      "due_date": "2026-06-16",
+      "notes": "Database optimization and indexing",
+      "created_at": "2026-09-16T10:31:10.205Z"
+    }
+  ],
+  "invoice_items": [
+    {
+      "id": 1,
+      "invoice_id": 1,
+      "description": "Website Design",
+      "quantity": 1,
+      "unit_price": 200000,
+      "total": 200000
+    },
+    {
+      "id": 2,
+      "invoice_id": 1,
+      "description": "Frontend Development",
+      "quantity": 1,
+      "unit_price": 200000,
+      "total": 200000
+    },
+    {
+      "id": 3,
+      "invoice_id": 1,
+      "description": "Testing & Deployment",
+      "quantity": 1,
+      "unit_price": 100000,
+      "total": 100000
+    },
+    {
+      "id": 4,
+      "invoice_id": 2,
+      "description": "UI/UX Design",
+      "quantity": 1,
+      "unit_price": 150000,
+      "total": 150000
+    },
+    {
+      "id": 5,
+      "invoice_id": 2,
+      "description": "App Development",
+      "quantity": 1,
+      "unit_price": 250000,
+      "total": 250000
+    },
+    {
+      "id": 6,
+      "invoice_id": 2,
+      "description": "API Integration",
+      "quantity": 1,
+      "unit_price": 100000,
+      "total": 100000
+    },
+    {
+      "id": 7,
+      "invoice_id": 3,
+      "description": "Business Analysis",
+      "quantity": 10,
+      "unit_price": 15000,
+      "total": 150000
+    },
+    {
+      "id": 8,
+      "invoice_id": 3,
+      "description": "Strategy Workshop",
+      "quantity": 2,
+      "unit_price": 100000,
+      "total": 200000
+    },
+    {
+      "id": 9,
+      "invoice_id": 4,
+      "description": "Project Planning",
+      "quantity": 1,
+      "unit_price": 200000,
+      "total": 200000
+    },
+    {
+      "id": 10,
+      "invoice_id": 4,
+      "description": "Site Supervision",
+      "quantity": 4,
+      "unit_price": 100000,
+      "total": 400000
+    },
+    {
+      "id": 11,
+      "invoice_id": 4,
+      "description": "Materials Procurement",
+      "quantity": 1,
+      "unit_price": 200000,
+      "total": 200000
+    },
+    {
+      "id": 12,
+      "invoice_id": 5,
+      "description": "Social Media Management",
+      "quantity": 1,
+      "unit_price": 150000,
+      "total": 150000
+    },
+    {
+      "id": 13,
+      "invoice_id": 5,
+      "description": "Content Creation",
+      "quantity": 1,
+      "unit_price": 100000,
+      "total": 100000
+    },
+    {
+      "id": 14,
+      "invoice_id": 6,
+      "description": "System Installation",
+      "quantity": 1,
+      "unit_price": 300000,
+      "total": 300000
+    },
+    {
+      "id": 15,
+      "invoice_id": 6,
+      "description": "Configuration",
+      "quantity": 1,
+      "unit_price": 200000,
+      "total": 200000
+    },
+    {
+      "id": 16,
+      "invoice_id": 6,
+      "description": "Staff Training",
+      "quantity": 1,
+      "unit_price": 150000,
+      "total": 150000
+    },
+    {
+      "id": 17,
+      "invoice_id": 7,
+      "description": "Network Assessment",
+      "quantity": 1,
+      "unit_price": 180000,
+      "total": 180000
+    },
+    {
+      "id": 18,
+      "invoice_id": 7,
+      "description": "Security Review",
+      "quantity": 1,
+      "unit_price": 140000,
+      "total": 140000
+    },
+    {
+      "id": 19,
+      "invoice_id": 7,
+      "description": "Report & Recommendations",
+      "quantity": 1,
+      "unit_price": 100000,
+      "total": 100000
+    },
+    {
+      "id": 20,
+      "invoice_id": 8,
+      "description": "Performance Analysis",
+      "quantity": 1,
+      "unit_price": 100000,
+      "total": 100000
+    },
+    {
+      "id": 21,
+      "invoice_id": 8,
+      "description": "Query Optimization",
+      "quantity": 1,
+      "unit_price": 120000,
+      "total": 120000
+    },
+    {
+      "id": 22,
+      "invoice_id": 8,
+      "description": "Indexing Strategy",
+      "quantity": 1,
+      "unit_price": 80000,
+      "total": 80000
+    }
+  ],
+  "payments": [
+    {
+      "id": 1,
+      "invoice_id": 1,
+      "amount": 300000,
+      "payment_date": "2026-06-16",
+      "method": "bank",
+      "notes": "First installment",
+      "created_at": "2026-09-16T10:31:10.177Z"
+    },
+    {
+      "id": 2,
+      "invoice_id": 1,
+      "amount": 200000,
+      "payment_date": "2026-07-16",
+      "method": "bank",
+      "notes": "Final payment",
+      "created_at": "2026-09-16T10:31:10.179Z"
+    },
+    {
+      "id": 3,
+      "invoice_id": 2,
+      "amount": 300000,
+      "payment_date": "2026-08-16",
+      "method": "mobile",
+      "notes": "Partial payment via MoMo",
+      "created_at": "2026-09-16T10:31:10.183Z"
+    },
+    {
+      "id": 4,
+      "invoice_id": 6,
+      "amount": 650000,
+      "payment_date": "2026-05-16",
+      "method": "bank",
+      "notes": "Paid in full",
+      "created_at": "2026-09-16T10:31:10.198Z"
+    },
+    {
+      "id": 5,
+      "invoice_id": 7,
+      "amount": 200000,
+      "payment_date": "2026-09-16",
+      "method": "cash",
+      "notes": "Initial deposit",
+      "created_at": "2026-09-16T10:31:10.203Z"
+    },
+    {
+      "id": 6,
+      "invoice_id": 8,
+      "amount": 300000,
+      "payment_date": "2026-06-16",
+      "method": "bank",
+      "notes": "Full payment",
+      "created_at": "2026-09-16T10:31:10.207Z"
+    },
+    {
+      "id": 7,
+      "invoice_id": 2,
+      "amount": 100000,
+      "payment_date": "2026-09-16",
+      "method": "mobile",
+      "notes": "Second installment test",
+      "created_at": "2026-09-16T10:45:38.783Z"
+    }
+  ],
+  "expenses": [
+    {
+      "category": "Rent",
+      "amount": 200000,
+      "expense_date": "2026-04-16",
+      "description": "Office rent - Month 1",
+      "reference": "RENT-001",
+      "id": 1,
+      "created_at": "2026-09-16T10:31:10.209Z"
+    },
+    {
+      "category": "Salaries",
+      "amount": 450000,
+      "expense_date": "2026-04-16",
+      "description": "Staff salaries",
+      "reference": "SAL-001",
+      "id": 2,
+      "created_at": "2026-09-16T10:31:10.211Z"
+    },
+    {
+      "category": "Utilities",
+      "amount": 35000,
+      "expense_date": "2026-04-16",
+      "description": "Electricity & water",
+      "reference": "UTL-001",
+      "id": 3,
+      "created_at": "2026-09-16T10:31:10.213Z"
+    },
+    {
+      "category": "Rent",
+      "amount": 200000,
+      "expense_date": "2026-05-16",
+      "description": "Office rent - Month 2",
+      "reference": "RENT-002",
+      "id": 4,
+      "created_at": "2026-09-16T10:31:10.214Z"
+    },
+    {
+      "category": "Salaries",
+      "amount": 450000,
+      "expense_date": "2026-05-16",
+      "description": "Staff salaries",
+      "reference": "SAL-002",
+      "id": 5,
+      "created_at": "2026-09-16T10:31:10.216Z"
+    },
+    {
+      "category": "Supplies",
+      "amount": 65000,
+      "expense_date": "2026-05-16",
+      "description": "Office supplies",
+      "reference": "SUP-001",
+      "id": 6,
+      "created_at": "2026-09-16T10:31:10.217Z"
+    },
+    {
+      "category": "Utilities",
+      "amount": 38000,
+      "expense_date": "2026-05-16",
+      "description": "Electricity & water",
+      "reference": "UTL-002",
+      "id": 7,
+      "created_at": "2026-09-16T10:31:10.221Z"
+    },
+    {
+      "category": "Rent",
+      "amount": 200000,
+      "expense_date": "2026-06-16",
+      "description": "Office rent - Month 3",
+      "reference": "RENT-003",
+      "id": 8,
+      "created_at": "2026-09-16T10:31:10.222Z"
+    },
+    {
+      "category": "Salaries",
+      "amount": 480000,
+      "expense_date": "2026-06-16",
+      "description": "Staff salaries",
+      "reference": "SAL-003",
+      "id": 9,
+      "created_at": "2026-09-16T10:31:10.224Z"
+    },
+    {
+      "category": "Utilities",
+      "amount": 32000,
+      "expense_date": "2026-06-16",
+      "description": "Electricity & water",
+      "reference": "UTL-003",
+      "id": 10,
+      "created_at": "2026-09-16T10:31:10.227Z"
+    },
+    {
+      "category": "Marketing",
+      "amount": 120000,
+      "expense_date": "2026-06-16",
+      "description": "Online advertising",
+      "reference": "MKT-001",
+      "id": 11,
+      "created_at": "2026-09-16T10:31:10.229Z"
+    },
+    {
+      "category": "Rent",
+      "amount": 200000,
+      "expense_date": "2026-07-16",
+      "description": "Office rent - Month 4",
+      "reference": "RENT-004",
+      "id": 12,
+      "created_at": "2026-09-16T10:31:10.231Z"
+    },
+    {
+      "category": "Salaries",
+      "amount": 480000,
+      "expense_date": "2026-07-16",
+      "description": "Staff salaries",
+      "reference": "SAL-004",
+      "id": 13,
+      "created_at": "2026-09-16T10:31:10.232Z"
+    },
+    {
+      "category": "Supplies",
+      "amount": 45000,
+      "expense_date": "2026-07-16",
+      "description": "Printer cartridges",
+      "reference": "SUP-002",
+      "id": 14,
+      "created_at": "2026-09-16T10:31:10.234Z"
+    },
+    {
+      "category": "Utilities",
+      "amount": 40000,
+      "expense_date": "2026-07-16",
+      "description": "Electricity & water",
+      "reference": "UTL-004",
+      "id": 15,
+      "created_at": "2026-09-16T10:31:10.239Z"
+    },
+    {
+      "category": "Rent",
+      "amount": 200000,
+      "expense_date": "2026-08-16",
+      "description": "Office rent - Month 5",
+      "reference": "RENT-005",
+      "id": 16,
+      "created_at": "2026-09-16T10:31:10.242Z"
+    },
+    {
+      "category": "Salaries",
+      "amount": 500000,
+      "expense_date": "2026-08-16",
+      "description": "Staff salaries",
+      "reference": "SAL-005",
+      "id": 17,
+      "created_at": "2026-09-16T10:31:10.245Z"
+    },
+    {
+      "category": "Utilities",
+      "amount": 36000,
+      "expense_date": "2026-08-16",
+      "description": "Electricity & water",
+      "reference": "UTL-005",
+      "id": 18,
+      "created_at": "2026-09-16T10:31:10.247Z"
+    },
+    {
+      "category": "Marketing",
+      "amount": 85000,
+      "expense_date": "2026-08-16",
+      "description": "Social media ads",
+      "reference": "MKT-002",
+      "id": 19,
+      "created_at": "2026-09-16T10:31:10.248Z"
+    },
+    {
+      "category": "Rent",
+      "amount": 200000,
+      "expense_date": "2026-09-16",
+      "description": "Office rent - Current",
+      "reference": "RENT-006",
+      "id": 20,
+      "created_at": "2026-09-16T10:31:10.250Z"
+    },
+    {
+      "category": "Salaries",
+      "amount": 500000,
+      "expense_date": "2026-09-16",
+      "description": "Staff salaries",
+      "reference": "SAL-006",
+      "id": 21,
+      "created_at": "2026-09-16T10:31:10.254Z"
+    },
+    {
+      "category": "Utilities",
+      "amount": 42000,
+      "expense_date": "2026-09-16",
+      "description": "Electricity & water",
+      "reference": "UTL-006",
+      "id": 22,
+      "created_at": "2026-09-16T10:31:10.258Z"
+    }
+  ],
+  "jobs": [
+    {
+      "client_id": 1,
+      "invoice_id": 1,
+      "title": "Website Redesign",
+      "status": "completed",
+      "start_date": "2026-05-16",
+      "end_date": "2026-06-16",
+      "description": "Complete website redesign and development",
+      "id": 1,
+      "created_at": "2026-09-16T10:31:10.261Z"
+    },
+    {
+      "client_id": 2,
+      "invoice_id": 2,
+      "title": "Mobile App MVP",
+      "status": "in_progress",
+      "start_date": "2026-07-16",
+      "end_date": null,
+      "description": "Develop MVP for mobile application",
+      "id": 2,
+      "created_at": "2026-09-16T10:31:10.263Z"
+    },
+    {
+      "client_id": 3,
+      "invoice_id": 3,
+      "title": "Business Consulting",
+      "status": "completed",
+      "start_date": "2026-06-16",
+      "end_date": "2026-07-16",
+      "description": "Business strategy consulting engagement",
+      "id": 3,
+      "created_at": "2026-09-16T10:31:10.264Z"
+    },
+    {
+      "client_id": 4,
+      "invoice_id": 4,
+      "title": "Construction PM",
+      "status": "in_progress",
+      "start_date": "2026-08-16",
+      "end_date": null,
+      "description": "Project management for new office building",
+      "id": 4,
+      "created_at": "2026-09-16T10:31:10.266Z"
+    },
+    {
+      "client_id": 5,
+      "invoice_id": null,
+      "title": "Marketing Campaign",
+      "status": "pending",
+      "start_date": null,
+      "end_date": null,
+      "description": "Q4 marketing campaign planning and execution",
+      "id": 5,
+      "created_at": "2026-09-16T10:31:10.268Z"
+    },
+    {
+      "client_id": 1,
+      "invoice_id": 6,
+      "title": "ERP Implementation",
+      "status": "completed",
+      "start_date": "2026-03-16",
+      "end_date": "2026-05-16",
+      "description": "Full ERP system setup and deployment",
+      "id": 6,
+      "created_at": "2026-09-16T10:31:10.275Z"
+    },
+    {
+      "client_id": 3,
+      "invoice_id": 7,
+      "title": "IT Audit",
+      "status": "in_progress",
+      "start_date": "2026-08-16",
+      "end_date": null,
+      "description": "Complete IT infrastructure audit",
+      "id": 7,
+      "created_at": "2026-09-16T10:31:10.277Z"
+    },
+    {
+      "client_id": 2,
+      "invoice_id": 8,
+      "title": "Database Optimization",
+      "status": "completed",
+      "start_date": "2026-04-16",
+      "end_date": "2026-06-16",
+      "description": "Database performance tuning",
+      "id": 8,
+      "created_at": "2026-09-16T10:31:10.279Z"
+    },
+    {
+      "client_id": 4,
+      "invoice_id": null,
+      "title": "Site Inspection",
+      "status": "completed",
+      "start_date": "2026-07-16",
+      "end_date": "2026-07-16",
+      "description": "Initial site inspection and assessment",
+      "id": 9,
+      "created_at": "2026-09-16T10:31:10.281Z"
+    },
+    {
+      "client_id": 5,
+      "invoice_id": null,
+      "title": "Brand Strategy",
+      "status": "completed",
+      "start_date": "2026-06-16",
+      "end_date": "2026-07-16",
+      "description": "Brand positioning and strategy development",
+      "id": 10,
+      "created_at": "2026-09-16T10:31:10.283Z"
+    }
+  ],
+  "nextIds": {
+    "users": 3,
+    "clients": 6,
+    "invoices": 9,
+    "invoice_items": 23,
+    "payments": 8,
+    "expenses": 23,
+    "jobs": 11
+  }
+}
