@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import { authMiddleware } from './middleware/auth';
+import { authMiddleware, adminOnly } from './middleware/auth';
 import authRoutes from './routes/auth';
 import clientRoutes from './routes/clients';
 import invoiceRoutes from './routes/invoices';
@@ -21,10 +21,10 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 
 // Protected routes
-app.use('/api/clients', authMiddleware, clientRoutes);
+app.use('/api/clients', authMiddleware, adminOnly, clientRoutes);
 app.use('/api/invoices', authMiddleware, invoiceRoutes);
 app.use('/api/payments', authMiddleware, paymentRoutes);
-app.use('/api/expenses', authMiddleware, expenseRoutes);
+app.use('/api/expenses', authMiddleware, adminOnly, expenseRoutes);
 app.use('/api/jobs', authMiddleware, jobRoutes);
 app.use('/api/reports', authMiddleware, reportRoutes);
 
@@ -36,4 +36,5 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Invoice Manager API running on http://localhost:${PORT}`);
   console.log(`   Health check: http://localhost:${PORT}/api/health`);
+  console.log(`   RBAC initialized`);
 });

@@ -126,7 +126,7 @@ export const JobModal: React.FC<JobModalProps> = ({
                 <option value="">No linked invoice</option>
                 {clientInvoices.map((inv) => (
                   <option key={inv.id} value={inv.id}>
-                    {inv.invoice_number} ({inv.total_amount.toLocaleString()} RWF)
+                    {inv.invoice_number} (MWK{inv.total_amount.toLocaleString()})
                   </option>
                 ))}
               </select>

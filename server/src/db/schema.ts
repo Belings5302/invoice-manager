@@ -1,6 +1,4 @@
-import Database from 'better-sqlite3';
-
-export function initSchema(db: Database.Database): void {
+export function initSchema(db: any): void {
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -8,7 +6,9 @@ export function initSchema(db: Database.Database): void {
       password_hash TEXT NOT NULL,
       name TEXT NOT NULL,
       role TEXT NOT NULL DEFAULT 'user' CHECK(role IN ('admin', 'user')),
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      client_id INTEGER,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE SET NULL
     );
 
     CREATE TABLE IF NOT EXISTS clients (

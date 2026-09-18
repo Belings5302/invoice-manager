@@ -1,9 +1,9 @@
-export function formatCurrency(amount: number | undefined | null, currency: string = 'RWF'): string {
-  if (amount === undefined || amount === null || isNaN(amount)) return `0 ${currency}`;
+export function formatCurrency(amount: number | undefined | null, currency: string = 'MWK'): string {
+  if (amount === undefined || amount === null || isNaN(amount)) return `${currency}0`;
   const formatted = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0,
   }).format(amount);
-  return `${formatted} ${currency}`;
+  return `${currency}${formatted}`;
 }
 
 export function formatDate(dateString: string | undefined | null): string {

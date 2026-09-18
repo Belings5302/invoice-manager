@@ -1,17 +1,18 @@
 import { Router } from 'express';
 import getDb from '../db/database';
+import { adminOnly, AuthRequest } from '../middleware/auth';
 
 const router = Router();
 
-// GET /api/reports/dashboard — Main dashboard KPIs and chart data
-router.get('/dashboard', (req, res) => {
+// GET /api/reports/dashboard — Main dashboard KPIs and chart data (Admin only)
+router.get('/dashboard', adminOnly, (req: AuthRequest, res) => {
   const db = getDb();
   const dashboard = db.getDashboardReport();
   res.json(dashboard);
 });
 
-// GET /api/reports/profit-loss
-router.get('/profit-loss', (req, res) => {
+// GET /api/reports/profit-loss (Admin only)
+router.get('/profit-loss', adminOnly, (req: AuthRequest, res) => {
   const db = getDb();
   const { months = '6' } = req.query;
   const data = db.getProfitLoss(parseInt(months as string) || 6);
@@ -19,11 +20,45 @@ router.get('/profit-loss', (req, res) => {
 });
 
 // GET /api/reports/client-statement/:id
-router.get('/client-statement/:id', (req, res) => {
+router.get('/client-statement/:id', (req: AuthRequest, res) => {
+  const statementClientId = Number(req.params.id);
+
+  // If user role, can only access their own statement
+  if (req.user?.role !== 'admin' && statementClientId !== req.user?.client_id) {
+    return res.status(403).json({ error: 'Access denied. You can only view your own statement.' });
+  }
+
   const db = getDb();
-  const statement = db.getClientStatement(Number(req.params.id));
+  const statement = db.getClientStatement(statementClientId);
   if (!statement) return res.status(404).json({ error: 'Client not found.' });
   res.json(statement);
+});
+
+// GET /api/reports/my-summary — Client portal overview
+router.get('/my-summary', (req: AuthRequest, res) => {
+  const clientId = req.user?.client_id;
+  if (!clientId) {
+    return res.status(400).json({ error: 'User is not linked to a client account.' });
+  }
+
+  const db = getDb();
+  const statement = db.getClientStatement(clientId);
+  if (!statement) {
+    return res.status(404).json({ error: 'Client account not found.' });
+  }
+
+  const jobs = db.getJobs({ client_id: clientId });
+
+  res.json({
+    client: statement.client,
+    totals: statement.totals,
+    recentInvoices: statement.invoices.slice(0, 5),
+    recentPayments: statement.payments.slice(0, 5),
+    jobs,
+    totalInvoicesCount: statement.invoices.length,
+    totalJobsCount: jobs.length,
+    activeJobsCount: jobs.filter(j => j.status !== 'completed').length,
+  });
 });
 
 export default router;

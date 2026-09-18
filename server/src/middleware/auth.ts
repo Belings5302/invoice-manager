@@ -9,10 +9,11 @@ export interface AuthRequest extends Request {
     email: string;
     name: string;
     role: string;
+    client_id?: number | null;
   };
 }
 
-export function generateToken(payload: { id: number; email: string; name: string; role: string }): string {
+export function generateToken(payload: { id: number; email: string; name: string; role: string; client_id?: number | null }): string {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
 }
 
@@ -33,6 +34,7 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
       email: decoded.email,
       name: decoded.name,
       role: decoded.role,
+      client_id: decoded.client_id ?? null,
     };
     next();
   } catch (err) {

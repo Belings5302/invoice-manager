@@ -14,16 +14,22 @@ import {
 import { useAuth } from '../../contexts/AuthContext';
 
 export const Sidebar: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin } = useAuth();
 
-  const navItems = [
-    { to: '/', label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/invoices', label: 'Invoices & Billing', icon: FileText },
-    { to: '/clients', label: 'Clients & Flow', icon: Users },
-    { to: '/expenses', label: 'Expenses', icon: CreditCard },
-    { to: '/jobs', label: 'Jobs Tracker', icon: Briefcase },
-    { to: '/reports', label: 'Reports & P&L', icon: BarChart3 },
-  ];
+  const navItems = isAdmin
+    ? [
+        { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+        { to: '/invoices', label: 'Invoices & Billing', icon: FileText },
+        { to: '/clients', label: 'Clients & Flow', icon: Users },
+        { to: '/expenses', label: 'Expenses', icon: CreditCard },
+        { to: '/jobs', label: 'Jobs Tracker', icon: Briefcase },
+        { to: '/reports', label: 'Reports & P&L', icon: BarChart3 },
+      ]
+    : [
+        { to: '/', label: 'My Dashboard', icon: LayoutDashboard },
+        { to: '/invoices', label: 'My Invoices', icon: FileText },
+        { to: '/jobs', label: 'My Jobs', icon: Briefcase },
+      ];
 
   return (
     <aside className="sidebar">
@@ -62,7 +68,7 @@ export const Sidebar: React.FC = () => {
           </div>
           <div className="sidebar-user-info">
             <div className="sidebar-user-name">{user?.name || 'User'}</div>
-            <div className="sidebar-user-role">{user?.role || 'Member'}</div>
+            <div className="sidebar-user-role">{isAdmin ? 'Administrator' : 'Client Account'}</div>
           </div>
           <button
             onClick={logout}

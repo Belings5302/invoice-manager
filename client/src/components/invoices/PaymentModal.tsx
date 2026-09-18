@@ -98,7 +98,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ invoice, onClose, on
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Payment Amount (RWF)</label>
+            <label className="form-label">Payment Amount (MWK)</label>
             <input
               type="number"
               className="form-input"

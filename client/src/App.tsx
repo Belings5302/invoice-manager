@@ -5,6 +5,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { Layout } from './components/layout/Layout';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { ClientPortalPage } from './pages/ClientPortalPage';
 import { InvoicesPage } from './pages/InvoicesPage';
 import { ClientsPage } from './pages/ClientsPage';
 import { ExpensesPage } from './pages/ExpensesPage';
@@ -29,6 +30,29 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   return <>{children}</>;
 };
 
+const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAdmin, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="loading-spinner" style={{ minHeight: '100vh' }}>
+        <div className="spinner"></div>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+const DashboardRoute: React.FC = () => {
+  const { isAdmin } = useAuth();
+  return isAdmin ? <DashboardPage /> : <ClientPortalPage />;
+};
+
 export const App: React.FC = () => {
   return (
     <ThemeProvider>
@@ -45,12 +69,33 @@ export const App: React.FC = () => {
                 </ProtectedRoute>
               }
             >
-              <Route index element={<DashboardPage />} />
+              <Route index element={<DashboardRoute />} />
               <Route path="invoices" element={<InvoicesPage />} />
-              <Route path="clients" element={<ClientsPage />} />
-              <Route path="expenses" element={<ExpensesPage />} />
+              <Route
+                path="clients"
+                element={
+                  <AdminRoute>
+                    <ClientsPage />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="expenses"
+                element={
+                  <AdminRoute>
+                    <ExpensesPage />
+                  </AdminRoute>
+                }
+              />
               <Route path="jobs" element={<JobsPage />} />
-              <Route path="reports" element={<ReportsPage />} />
+              <Route
+                path="reports"
+                element={
+                  <AdminRoute>
+                    <ReportsPage />
+                  </AdminRoute>
+                }
+              />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

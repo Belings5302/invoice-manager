@@ -84,7 +84,7 @@ export const ExpenseModal: React.FC<ExpenseModalProps> = ({
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Expense Amount (RWF)</label>
+            <label className="form-label">Expense Amount (MWK)</label>
             <input
               type="number"
               className="form-input"

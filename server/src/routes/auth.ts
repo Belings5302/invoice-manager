@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import getDb from '../db/database';
-import { generateToken } from '../middleware/auth';
+import { generateToken, authMiddleware, AuthRequest } from '../middleware/auth';
 
 const router = Router();
 
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password, name, client_id } = req.body;
     if (!email || !password || !name) {
       return res.status(400).json({ error: 'Email, password, and name are required.' });
     }
@@ -25,10 +25,11 @@ router.post('/register', async (req, res) => {
       password_hash: hash,
       name,
       role: 'user',
+      client_id: client_id ? Number(client_id) : null,
     });
 
-    const token = generateToken({ id: user.id, email: user.email, name: user.name, role: user.role });
-    res.status(201).json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role } });
+    const token = generateToken({ id: user.id, email: user.email, name: user.name, role: user.role, client_id: user.client_id });
+    res.status(201).json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role, client_id: user.client_id } });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
@@ -53,17 +54,17 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials.' });
     }
 
-    const token = generateToken({ id: user.id, email: user.email, name: user.name, role: user.role });
-    res.json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role } });
+    const token = generateToken({ id: user.id, email: user.email, name: user.name, role: user.role, client_id: user.client_id });
+    res.json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role, client_id: user.client_id } });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 });
 
 // GET /api/auth/me
-router.get('/me', (req: any, res) => {
+router.get('/me', authMiddleware, (req: AuthRequest, res) => {
   const db = getDb();
-  const user = db.getUserById(req.user?.id);
+  const user = db.getUserById(req.user?.id!);
   if (!user) return res.status(404).json({ error: 'User not found.' });
   const { password_hash, ...safeUser } = user;
   res.json(safeUser);

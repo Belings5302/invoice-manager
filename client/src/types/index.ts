@@ -3,7 +3,8 @@ export interface User {
   email: string;
   name: string;
   role: 'admin' | 'user';
-  created_at: string;
+  client_id?: number | null;
+  created_at?: string;
 }
 
 export interface Client {
@@ -151,3 +152,19 @@ export interface ClientStatement {
     total_outstanding: number;
   };
 }
+
+export interface ClientSummary {
+  client: Client;
+  totals: {
+    total_invoiced: number;
+    total_paid: number;
+    total_outstanding: number;
+  };
+  recentInvoices: Invoice[];
+  recentPayments: Payment[];
+  jobs: Job[];
+  totalInvoicesCount: number;
+  totalJobsCount: number;
+  activeJobsCount: number;
+}
+

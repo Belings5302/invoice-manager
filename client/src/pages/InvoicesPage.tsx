@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Invoice, Client } from '../types';
 import { api } from '../utils/api';
+import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate, getStatusBadgeClass, formatStatusLabel } from '../utils/formatters';
 import { InvoiceModal } from '../components/invoices/InvoiceModal';
 import { PaymentModal } from '../components/invoices/PaymentModal';
@@ -9,6 +10,7 @@ import { InvoiceDetailModal } from '../components/invoices/InvoiceDetailModal';
 import { Plus, Search, Filter, CreditCard, Eye, Trash2, RefreshCw } from 'lucide-react';
 
 export const InvoicesPage: React.FC = () => {
+  const { isAdmin } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
@@ -24,12 +26,17 @@ export const InvoicesPage: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [invs, cls] = await Promise.all([
-        api.get<Invoice[]>('/invoices'),
-        api.get<Client[]>('/clients'),
-      ]);
-      setInvoices(invs);
-      setClients(cls);
+      if (isAdmin) {
+        const [invs, cls] = await Promise.all([
+          api.get<Invoice[]>('/invoices'),
+          api.get<Client[]>('/clients'),
+        ]);
+        setInvoices(invs);
+        setClients(cls);
+      } else {
+        const invs = await api.get<Invoice[]>('/invoices');
+        setInvoices(invs);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -70,16 +77,18 @@ export const InvoicesPage: React.FC = () => {
       <div className="page-header">
         <div className="page-header-actions">
           <div>
-            <h1>Invoices & Billing System</h1>
-            <p>Generate invoices, record partial payments, and track client receivables</p>
+            <h1>{isAdmin ? 'Invoices & Billing System' : 'My Invoices'}</h1>
+            <p>{isAdmin ? 'Generate invoices, record partial payments, and track client receivables' : 'View your invoices, check outstanding balances, and download invoice copies'}</p>
           </div>
           <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
             <button onClick={loadData} className="btn btn-secondary btn-sm">
               <RefreshCw size={14} className={loading ? 'animate-spin' : ''} /> Refresh
             </button>
-            <button onClick={() => setShowCreateModal(true)} className="btn btn-primary btn-sm">
-              <Plus size={16} /> Create Invoice
-            </button>
+            {isAdmin && (
+              <button onClick={() => setShowCreateModal(true)} className="btn btn-primary btn-sm">
+                <Plus size={16} /> Create Invoice
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -194,7 +203,7 @@ export const InvoicesPage: React.FC = () => {
                     </td>
                     <td style={{ textAlign: 'right' }}>
                       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '4px' }}>
-                        {balanceDue > 0 && (
+                        {isAdmin && balanceDue > 0 && (
                           <button
                             onClick={() => setPaymentInvoice(inv)}
                             className="btn btn-secondary btn-sm"
@@ -212,14 +221,16 @@ export const InvoicesPage: React.FC = () => {
                         >
                           <Eye size={16} />
                         </button>
-                        <button
-                          onClick={() => handleDelete(inv.id)}
-                          className="btn btn-ghost btn-sm"
-                          title="Delete Invoice"
-                          style={{ padding: '6px', color: 'var(--danger)' }}
-                        >
-                          <Trash2 size={16} />
-                        </button>
+                        {isAdmin && (
+                          <button
+                            onClick={() => handleDelete(inv.id)}
+                            className="btn btn-ghost btn-sm"
+                            title="Delete Invoice"
+                            style={{ padding: '6px', color: 'var(--danger)' }}
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

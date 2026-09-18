@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Invoice } from '../../types';
 import { api } from '../../utils/api';
+import { useAuth } from '../../contexts/AuthContext';
 import { formatCurrency, formatDate, getStatusBadgeClass } from '../../utils/formatters';
 import { X, Printer, CheckCircle, CreditCard, Clock } from 'lucide-react';
 
 interface InvoiceDetailModalProps {
   invoiceId: number;
   onClose: () => void;
-  onRecordPayment: (invoice: Invoice) => void;
+  onRecordPayment?: (invoice: Invoice) => void;
 }
 
 export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
@@ -15,6 +16,7 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
   onClose,
   onRecordPayment,
 }) => {
+  const { isAdmin } = useAuth();
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -65,7 +67,7 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
             <button onClick={handlePrint} className="btn btn-secondary btn-sm">
               <Printer size={14} /> Print / PDF
             </button>
-            {balanceDue > 0 && (
+            {isAdmin && balanceDue > 0 && onRecordPayment && (
               <button
                 onClick={() => {
                   onClose();

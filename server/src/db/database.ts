@@ -7,6 +7,7 @@ export interface User {
   password_hash: string;
   name: string;
   role: 'admin' | 'user';
+  client_id?: number | null;
   created_at: string;
 }
 
@@ -163,10 +164,15 @@ class DatabaseEngine {
     return this.data.users.find(u => u.id === Number(id));
   }
 
+  public getUserByClientId(clientId: number): User | undefined {
+    return this.data.users.find(u => u.client_id === Number(clientId));
+  }
+
   public createUser(user: Omit<User, 'id' | 'created_at'>): User {
     const id = this.data.nextIds.users++;
     const newUser: User = {
       ...user,
+      client_id: user.client_id ?? null,
       id,
       created_at: new Date().toISOString(),
     };

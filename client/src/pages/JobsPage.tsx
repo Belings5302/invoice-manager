@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Job, Client, Invoice } from '../types';
 import { api } from '../utils/api';
+import { useAuth } from '../contexts/AuthContext';
 import { formatDate, getStatusBadgeClass, formatStatusLabel } from '../utils/formatters';
 import { JobModal } from '../components/jobs/JobModal';
 import { Plus, Search, Filter, CheckCircle2, Clock, PlayCircle, Edit2, Trash2, RefreshCw } from 'lucide-react';
 
 export const JobsPage: React.FC = () => {
+  const { isAdmin } = useAuth();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -19,14 +21,23 @@ export const JobsPage: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [jobsData, clientsData, invsData] = await Promise.all([
-        api.get<Job[]>('/jobs'),
-        api.get<Client[]>('/clients'),
-        api.get<Invoice[]>('/invoices'),
-      ]);
-      setJobs(jobsData);
-      setClients(clientsData);
-      setInvoices(invsData);
+      if (isAdmin) {
+        const [jobsData, clientsData, invsData] = await Promise.all([
+          api.get<Job[]>('/jobs'),
+          api.get<Client[]>('/clients'),
+          api.get<Invoice[]>('/invoices'),
+        ]);
+        setJobs(jobsData);
+        setClients(clientsData);
+        setInvoices(invsData);
+      } else {
+        const [jobsData, invsData] = await Promise.all([
+          api.get<Job[]>('/jobs'),
+          api.get<Invoice[]>('/invoices'),
+        ]);
+        setJobs(jobsData);
+        setInvoices(invsData);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -78,16 +89,18 @@ export const JobsPage: React.FC = () => {
       <div className="page-header">
         <div className="page-header-actions">
           <div>
-            <h1>Job & Project Delivery Tracker</h1>
-            <p>Monitor completed jobs, active engagements, and monthly delivery frequencies</p>
+            <h1>{isAdmin ? 'Job & Project Delivery Tracker' : 'My Projects & Deliverables'}</h1>
+            <p>{isAdmin ? 'Monitor completed jobs, active engagements, and monthly delivery frequencies' : 'Track the progress and status of your active and completed project deliverables'}</p>
           </div>
           <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
             <button onClick={loadData} className="btn btn-secondary btn-sm">
               <RefreshCw size={14} className={loading ? 'animate-spin' : ''} /> Refresh
             </button>
-            <button onClick={() => setShowAddModal(true)} className="btn btn-primary btn-sm">
-              <Plus size={16} /> New Job
-            </button>
+            {isAdmin && (
+              <button onClick={() => setShowAddModal(true)} className="btn btn-primary btn-sm">
+                <Plus size={16} /> New Job
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -167,19 +180,19 @@ export const JobsPage: React.FC = () => {
               <th>Started</th>
               <th>Finished</th>
               <th style={{ textAlign: 'center' }}>Status</th>
-              <th style={{ textAlign: 'right' }}>Actions</th>
+              {isAdmin && <th style={{ textAlign: 'right' }}>Actions</th>}
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={7} style={{ textAlign: 'center', padding: 'var(--space-8)' }}>
+                <td colSpan={isAdmin ? 7 : 6} style={{ textAlign: 'center', padding: 'var(--space-8)' }}>
                   <div className="spinner" style={{ margin: '0 auto' }}></div>
                 </td>
               </tr>
             ) : filteredJobs.length === 0 ? (
               <tr>
-                <td colSpan={7} style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--text-muted)' }}>
+                <td colSpan={isAdmin ? 7 : 6} style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--text-muted)' }}>
                   No jobs found matching criteria.
                 </td>
               </tr>
@@ -210,36 +223,38 @@ export const JobsPage: React.FC = () => {
                       {formatStatusLabel(job.status)}
                     </span>
                   </td>
-                  <td style={{ textAlign: 'right' }}>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '4px' }}>
-                      {job.status !== 'completed' && (
+                  {isAdmin && (
+                    <td style={{ textAlign: 'right' }}>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '4px' }}>
+                        {job.status !== 'completed' && (
+                          <button
+                            onClick={() => handleQuickComplete(job)}
+                            className="btn btn-secondary btn-sm"
+                            title="Mark as Completed"
+                            style={{ padding: '6px 10px', fontSize: '11px' }}
+                          >
+                            <CheckCircle2 size={13} /> Complete
+                          </button>
+                        )}
                         <button
-                          onClick={() => handleQuickComplete(job)}
-                          className="btn btn-secondary btn-sm"
-                          title="Mark as Completed"
-                          style={{ padding: '6px 10px', fontSize: '11px' }}
+                          onClick={() => setEditingJob(job)}
+                          className="btn btn-ghost btn-sm"
+                          title="Edit"
+                          style={{ padding: '6px' }}
                         >
-                          <CheckCircle2 size={13} /> Complete
+                          <Edit2 size={15} />
                         </button>
-                      )}
-                      <button
-                        onClick={() => setEditingJob(job)}
-                        className="btn btn-ghost btn-sm"
-                        title="Edit"
-                        style={{ padding: '6px' }}
-                      >
-                        <Edit2 size={15} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(job.id)}
-                        className="btn btn-ghost btn-sm"
-                        title="Delete"
-                        style={{ padding: '6px', color: 'var(--danger)' }}
-                      >
-                        <Trash2 size={15} />
-                      </button>
-                    </div>
-                  </td>
+                        <button
+                          onClick={() => handleDelete(job.id)}
+                          className="btn btn-ghost btn-sm"
+                          title="Delete"
+                          style={{ padding: '6px', color: 'var(--danger)' }}
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))
             )}

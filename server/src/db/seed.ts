@@ -13,19 +13,19 @@ export async function seed(): Promise<void> {
 
   console.log('Seeding database...');
 
-  // Create admin and regular user
-  const adminHash = await bcrypt.hash('admin123', 10);
-  const userHash = await bcrypt.hash('user123', 10);
-
-  db.createUser({ email: 'admin@invoicemanager.com', password_hash: adminHash, name: 'Admin User', role: 'admin' });
-  db.createUser({ email: 'user@invoicemanager.com', password_hash: userHash, name: 'Regular User', role: 'user' });
-
   // Create clients
   const client1 = db.createClient({ name: 'Acme Corporation', email: 'billing@acme.com', phone: '+250 788 100 200', address: 'KG 123 St, Kigali', company: 'Acme Corp' });
   const client2 = db.createClient({ name: 'TechVentures Ltd', email: 'finance@techventures.rw', phone: '+250 788 300 400', address: 'KN 45 Ave, Kigali', company: 'TechVentures' });
   const client3 = db.createClient({ name: 'Green Solutions', email: 'accounts@greensol.rw', phone: '+250 788 500 600', address: 'KK 78 St, Kigali', company: 'Green Solutions LLC' });
   const client4 = db.createClient({ name: 'Summit Builders', email: 'pay@summitbuild.rw', phone: '+250 788 700 800', address: 'KG 90 St, Kigali', company: 'Summit Builders' });
   const client5 = db.createClient({ name: 'Horizon Media', email: 'billing@horizon.rw', phone: '+250 788 900 100', address: 'KN 12 Ave, Kigali', company: 'Horizon Media Group' });
+
+  // Create admin and regular user
+  const adminHash = await bcrypt.hash('admin123', 10);
+  const userHash = await bcrypt.hash('user123', 10);
+
+  db.createUser({ email: 'admin@invoicemanager.com', password_hash: adminHash, name: 'Admin User', role: 'admin' });
+  db.createUser({ email: 'user@invoicemanager.com', password_hash: userHash, name: 'Regular User', role: 'user', client_id: client1.id });
 
   // Helper date functions
   const monthsAgo = (n: number): string => {
