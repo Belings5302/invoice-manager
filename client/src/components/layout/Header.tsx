@@ -1,63 +1,45 @@
 import React from 'react';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, Menu } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { ThemeToggle } from '../common/ThemeToggle';
 
 interface HeaderProps {
   title?: string;
   subtitle?: string;
+  onToggleNav?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, subtitle }) => {
+export const Header: React.FC<HeaderProps> = ({ title, subtitle, onToggleNav }) => {
   const { user } = useAuth();
 
   return (
-    <header style={{
-      height: 'var(--header-height)',
-      borderBottom: '1px solid var(--border-color)',
-      padding: '0 var(--space-8)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      backgroundColor: 'var(--bg-card)',
-      backdropFilter: 'blur(12px)',
-      position: 'sticky',
-      top: 0,
-      zIndex: 50,
-      transition: 'background-color var(--transition-base), border-color var(--transition-base)',
-    }}>
-      <div>
-        {title && <h2 style={{ fontSize: 'var(--font-size-lg)', fontWeight: 700 }}>{title}</h2>}
-        {subtitle && <p style={{ fontSize: 'var(--font-size-xs)', color: 'var(--text-muted)' }}>{subtitle}</p>}
+    <header className="app-header">
+      <div className="header-left">
+        <button
+          className="mobile-nav-toggle"
+          onClick={onToggleNav}
+          aria-label="Toggle Navigation Menu"
+          title="Open Menu"
+        >
+          <Menu size={22} />
+        </button>
+
+        <div className="header-title-box">
+          {title && <h2 className="header-title">{title}</h2>}
+          {subtitle && <p className="header-subtitle">{subtitle}</p>}
+        </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+      <div className="header-right">
         {/* Theme Toggle Button */}
         <ThemeToggle showLabel={true} />
 
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 'var(--space-2)',
-          padding: '4px 10px',
-          borderRadius: 'var(--radius-full)',
-          background: 'var(--info-bg)',
-          border: '1px solid var(--info-border)',
-          fontSize: 'var(--font-size-xs)',
-          color: 'var(--accent-blue)',
-          fontWeight: 600,
-        }}>
+        <div className="header-shield">
           <ShieldCheck size={14} />
           <span>{user?.role === 'admin' ? 'Administrator' : 'User Access'}</span>
         </div>
 
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 'var(--space-2)',
-          fontSize: 'var(--font-size-xs)',
-          color: 'var(--text-secondary)',
-        }}>
+        <div className="header-org">
           <span>Organization: <strong>All Enterprise</strong></span>
         </div>
       </div>

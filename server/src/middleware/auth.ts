@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import getDb from '../db/database';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'invoice-manager-secret-key-change-in-production';
 
@@ -29,12 +30,21 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as any;
+    let clientId = decoded.client_id ?? null;
+    if (clientId === null) {
+      const db = getDb();
+      const dbUser = db.getUserById(decoded.id);
+      if (dbUser && dbUser.client_id) {
+        clientId = dbUser.client_id;
+      }
+    }
+
     req.user = {
       id: decoded.id,
       email: decoded.email,
       name: decoded.name,
       role: decoded.role,
-      client_id: decoded.client_id ?? null,
+      client_id: clientId,
     };
     next();
   } catch (err) {

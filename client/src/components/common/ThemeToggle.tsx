@@ -27,7 +27,7 @@ export const ThemeToggle: React.FC<{ showLabel?: boolean }> = ({ showLabel = fal
         <Moon size={15} color="#3b82f6" style={{ transition: 'transform 0.3s' }} />
       )}
       {showLabel && (
-        <span style={{ fontSize: 'var(--font-size-xs)', fontWeight: 600 }}>
+        <span className="theme-toggle-label" style={{ fontSize: 'var(--font-size-xs)', fontWeight: 600 }}>
           {isDark ? 'Light Mode' : 'Dark Mode'}
         </span>
       )}

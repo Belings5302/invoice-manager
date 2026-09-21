@@ -11,6 +11,7 @@ import { ClientsPage } from './pages/ClientsPage';
 import { ExpensesPage } from './pages/ExpensesPage';
 import { JobsPage } from './pages/JobsPage';
 import { ReportsPage } from './pages/ReportsPage';
+import { UsersPage } from './pages/UsersPage';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -93,6 +94,14 @@ export const App: React.FC = () => {
                 element={
                   <AdminRoute>
                     <ReportsPage />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="users"
+                element={
+                  <AdminRoute>
+                    <UsersPage />
                   </AdminRoute>
                 }
               />

@@ -9,6 +9,7 @@ import paymentRoutes from './routes/payments';
 import expenseRoutes from './routes/expenses';
 import jobRoutes from './routes/jobs';
 import reportRoutes from './routes/reports';
+import userRoutes from './routes/users';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -27,6 +28,7 @@ app.use('/api/payments', authMiddleware, paymentRoutes);
 app.use('/api/expenses', authMiddleware, adminOnly, expenseRoutes);
 app.use('/api/jobs', authMiddleware, jobRoutes);
 app.use('/api/reports', authMiddleware, reportRoutes);
+app.use('/api/users', authMiddleware, adminOnly, userRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

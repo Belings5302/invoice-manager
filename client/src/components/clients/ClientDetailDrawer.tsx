@@ -74,7 +74,7 @@ export const ClientDetailDrawer: React.FC<ClientDetailDrawerProps> = ({
         {/* Money Flow Cards */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))',
           gap: 'var(--space-3)',
           marginBottom: 'var(--space-6)'
         }}>

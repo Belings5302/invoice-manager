@@ -2,9 +2,11 @@ const API_BASE = '/api';
 
 export class ApiError extends Error {
   status: number;
-  constructor(message: string, status: number) {
+  code: string;
+  constructor(message: string, status: number, code?: string) {
     super(message);
     this.status = status;
+    this.code = code || message;
   }
 }
 
@@ -36,7 +38,7 @@ export async function request<T>(endpoint: string, options: RequestInit = {}): P
   const data = await response.json();
 
   if (!response.ok) {
-    throw new ApiError(data.error || 'An error occurred', response.status);
+    throw new ApiError(data.message || data.error || 'An error occurred', response.status, data.error);
   }
 
   return data as T;
@@ -46,5 +48,7 @@ export const api = {
   get: <T>(endpoint: string) => request<T>(endpoint, { method: 'GET' }),
   post: <T>(endpoint: string, body: any) => request<T>(endpoint, { method: 'POST', body: JSON.stringify(body) }),
   put: <T>(endpoint: string, body: any) => request<T>(endpoint, { method: 'PUT', body: JSON.stringify(body) }),
+  patch: <T>(endpoint: string, body: any) => request<T>(endpoint, { method: 'PATCH', body: JSON.stringify(body) }),
   delete: <T>(endpoint: string) => request<T>(endpoint, { method: 'DELETE' }),
 };
+

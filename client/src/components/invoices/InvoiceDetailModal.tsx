@@ -55,7 +55,7 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" style={{ maxWidth: 740 }} onClick={(e) => e.stopPropagation()}>
         {/* Actions Bar */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: 'var(--space-4)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
             <span className={`badge ${getStatusBadgeClass(invoice.status)}`} style={{ fontSize: '13px' }}>
               <span className="badge-dot"></span>
@@ -63,7 +63,7 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
             </span>
           </div>
 
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <button onClick={handlePrint} className="btn btn-secondary btn-sm">
               <Printer size={14} /> Print / PDF
             </button>
@@ -89,10 +89,10 @@ export const InvoiceDetailModal: React.FC<InvoiceDetailModalProps> = ({
           backgroundColor: 'rgba(255, 255, 255, 0.02)',
           border: '1px solid var(--border-color)',
           borderRadius: 'var(--radius-lg)',
-          padding: 'var(--space-6)',
+          padding: 'var(--space-4) var(--space-5)',
         }}>
           {/* Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-color)', paddingBottom: 'var(--space-4)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 'var(--space-3)', borderBottom: '1px solid var(--border-color)', paddingBottom: 'var(--space-4)' }}>
             <div>
               <h2 style={{ fontSize: 'var(--font-size-2xl)', fontWeight: 800 }}>
                 {invoice.invoice_number}

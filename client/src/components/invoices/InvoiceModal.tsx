@@ -157,49 +157,56 @@ export const InvoiceModal: React.FC<InvoiceModalProps> = ({ clients, onClose, on
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {items.map((item, idx) => (
-                <div key={idx} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Description / Service"
-                    value={item.description}
-                    onChange={(e) => updateItem(idx, 'description', e.target.value)}
-                    style={{ flex: 3 }}
-                    required
-                  />
-                  <input
-                    type="number"
-                    className="form-input"
-                    placeholder="Qty"
-                    value={item.quantity}
-                    onChange={(e) => updateItem(idx, 'quantity', Number(e.target.value))}
-                    style={{ flex: 1, minWidth: 60 }}
-                    min={1}
-                    required
-                  />
-                  <input
-                    type="number"
-                    className="form-input"
-                    placeholder="Unit Price"
-                    value={item.unit_price}
-                    onChange={(e) => updateItem(idx, 'unit_price', Number(e.target.value))}
-                    style={{ flex: 2, minWidth: 100 }}
-                    min={0}
-                    required
-                  />
-                  <div style={{ flex: 2, textAlign: 'right', fontWeight: 600, fontSize: '13px' }}>
-                    {formatCurrency(item.quantity * item.unit_price)}
+                <div key={idx} className="invoice-item-row">
+                  <div className="invoice-item-desc">
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="Description / Service rendered"
+                      value={item.description}
+                      onChange={(e) => updateItem(idx, 'description', e.target.value)}
+                      required
+                    />
                   </div>
-                  {items.length > 1 && (
+                  <div>
+                    <input
+                      type="number"
+                      className="form-input"
+                      placeholder="Qty"
+                      value={item.quantity}
+                      onChange={(e) => updateItem(idx, 'quantity', Number(e.target.value))}
+                      min={1}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="number"
+                      className="form-input"
+                      placeholder="Unit Price"
+                      value={item.unit_price}
+                      onChange={(e) => updateItem(idx, 'unit_price', Number(e.target.value))}
+                      min={0}
+                      required
+                    />
+                  </div>
+                  <div className="invoice-item-calc">
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }} className="mobile-only-label">Total: </span>
+                    <strong style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+                      {formatCurrency(item.quantity * item.unit_price)}
+                    </strong>
+                  </div>
+                  {items.length > 1 ? (
                     <button
                       type="button"
                       onClick={() => removeItem(idx)}
                       className="btn btn-ghost btn-sm"
+                      title="Remove item"
                       style={{ color: 'var(--danger)', padding: '6px' }}
                     >
                       <Trash2 size={16} />
                     </button>
-                  )}
+                  ) : <div style={{ width: '28px' }} />}
                 </div>
               ))}
             </div>

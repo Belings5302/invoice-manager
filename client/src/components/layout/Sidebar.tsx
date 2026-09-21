@@ -9,11 +9,17 @@ import {
   BarChart3,
   LogOut,
   Receipt,
-  Layers,
+  X,
+  UserCheck,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => {
   const { user, logout, isAdmin } = useAuth();
 
   const navItems = isAdmin
@@ -24,6 +30,7 @@ export const Sidebar: React.FC = () => {
         { to: '/expenses', label: 'Expenses', icon: CreditCard },
         { to: '/jobs', label: 'Jobs Tracker', icon: Briefcase },
         { to: '/reports', label: 'Reports & P&L', icon: BarChart3 },
+        { to: '/users', label: 'User & Role Access', icon: UserCheck },
       ]
     : [
         { to: '/', label: 'My Dashboard', icon: LayoutDashboard },
@@ -31,16 +38,31 @@ export const Sidebar: React.FC = () => {
         { to: '/jobs', label: 'My Jobs', icon: Briefcase },
       ];
 
+  const handleLinkClick = () => {
+    if (onClose) onClose();
+  };
+
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-logo">
-        <div className="sidebar-logo-icon">
-          <Receipt size={22} color="white" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', flex: 1 }}>
+          <div className="sidebar-logo-icon">
+            <Receipt size={22} color="white" />
+          </div>
+          <div>
+            <h2>Flow<span>Bill</span></h2>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Financial & Billing OS</div>
+          </div>
         </div>
-        <div>
-          <h2>Flow<span>Bill</span></h2>
-          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Financial & Billing OS</div>
-        </div>
+
+        {/* Mobile close button */}
+        <button
+          className="sidebar-mobile-close"
+          onClick={onClose}
+          aria-label="Close navigation"
+        >
+          <X size={20} />
+        </button>
       </div>
 
       <nav className="sidebar-nav">
@@ -53,6 +75,7 @@ export const Sidebar: React.FC = () => {
               to={item.to}
               className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
               end={item.to === '/'}
+              onClick={handleLinkClick}
             >
               <Icon className="sidebar-icon" />
               <span>{item.label}</span>

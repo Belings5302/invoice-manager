@@ -28,16 +28,19 @@ export const ClientPortalPage: React.FC = () => {
   const [summary, setSummary] = useState<ClientSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<string | null>(null);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState<number | null>(null);
 
   const loadSummary = async () => {
     setLoading(true);
     setError(null);
+    setErrorCode(null);
     try {
       const data = await api.get<ClientSummary>('/reports/my-summary');
       setSummary(data);
     } catch (err: any) {
       console.error(err);
+      setErrorCode(err.code || null);
       setError(err.message || 'Failed to load your client account summary.');
     } finally {
       setLoading(false);
@@ -56,13 +59,82 @@ export const ClientPortalPage: React.FC = () => {
     );
   }
 
-  if (error || !summary) {
+  // Pending activation — user exists but admin hasn't linked them to a client yet
+  if (errorCode === 'PENDING_ACTIVATION' || (!summary && !error && !loading)) {
+    return (
+      <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', padding: 'var(--space-6)' }}>
+        <div className="card" style={{
+          padding: 'var(--space-10) var(--space-8)',
+          textAlign: 'center',
+          maxWidth: 560,
+          width: '100%',
+          background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.07) 0%, rgba(139, 92, 246, 0.05) 100%)',
+          border: '1px solid rgba(59, 130, 246, 0.2)',
+          borderRadius: 'var(--radius-2xl)',
+        }}>
+          {/* Animated hourglass icon */}
+          <div style={{
+            width: 72, height: 72, borderRadius: '50%',
+            background: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15))',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            margin: '0 auto var(--space-6)',
+            border: '2px solid rgba(59,130,246,0.25)',
+          }}>
+            <Clock size={32} color="var(--accent-blue)" />
+          </div>
+
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: 'var(--space-3)', color: 'var(--text-primary)' }}>
+            Account Activation Pending
+          </h2>
+
+          <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-2)', lineHeight: 1.7 }}>
+            Your account has been created successfully. An administrator needs to link your account to a client profile before you can access your portal.
+          </p>
+
+          <p style={{ color: 'var(--text-muted)', fontSize: 'var(--font-size-sm)', marginBottom: 'var(--space-6)' }}>
+            Once activated, you'll be able to view your invoices, payment history, and project deliverables here.
+          </p>
+
+          <div style={{
+            background: 'var(--bg-secondary)',
+            border: '1px solid var(--border-color)',
+            borderRadius: 'var(--radius-lg)',
+            padding: 'var(--space-4)',
+            marginBottom: 'var(--space-6)',
+          }}>
+            <div style={{ fontSize: 'var(--font-size-xs)', color: 'var(--text-muted)', marginBottom: 'var(--space-2)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              What happens next?
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', textAlign: 'left' }}>
+              {[
+                { icon: '✅', text: 'Your account has been registered' },
+                { icon: '⏳', text: 'Administrator review in progress' },
+                { icon: '🔗', text: 'Client profile will be linked to your account' },
+                { icon: '🚀', text: 'You\'ll gain full portal access' },
+              ].map((step, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', fontSize: 'var(--font-size-sm)', color: i === 0 ? 'var(--success)' : i === 1 ? 'var(--accent-blue)' : 'var(--text-muted)' }}>
+                  <span style={{ fontSize: '16px' }}>{step.icon}</span>
+                  <span>{step.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button onClick={loadSummary} className="btn btn-secondary btn-sm" style={{ margin: '0 auto' }}>
+            <RefreshCw size={14} /> Check activation status
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && !summary) {
     return (
       <div className="card" style={{ padding: 'var(--space-8)', textAlign: 'center', maxWidth: 600, margin: '40px auto' }}>
         <AlertCircle size={48} color="var(--warning)" style={{ margin: '0 auto var(--space-4)' }} />
-        <h2>Account Setup Required</h2>
+        <h2>Something went wrong</h2>
         <p style={{ color: 'var(--text-muted)', marginBottom: 'var(--space-6)' }}>
-          {error || 'Your account is not currently linked to an active client record. Please contact administration.'}
+          {error || 'Failed to load your client account summary.'}
         </p>
         <button onClick={loadSummary} className="btn btn-secondary btn-sm" style={{ margin: '0 auto' }}>
           <RefreshCw size={14} /> Try Again
@@ -70,6 +142,7 @@ export const ClientPortalPage: React.FC = () => {
       </div>
     );
   }
+
 
   const { client, totals, recentInvoices, recentPayments, jobs, totalInvoicesCount, totalJobsCount, activeJobsCount } = summary;
   const isSettled = totals.total_outstanding <= 0;
@@ -190,7 +263,7 @@ export const ClientPortalPage: React.FC = () => {
       </div>
 
       {/* Main Content Grid: Invoices & Projects */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: 'var(--space-6)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: 'var(--space-6)' }}>
         {/* Left: Recent Invoices */}
         <div className="card" style={{ padding: 'var(--space-5)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)' }}>

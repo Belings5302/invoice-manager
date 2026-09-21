@@ -181,6 +181,29 @@ class DatabaseEngine {
     return newUser;
   }
 
+  public updateUser(id: number, updates: Partial<User>): User | undefined {
+    const user = this.getUserById(id);
+    if (!user) return undefined;
+    Object.assign(user, updates);
+    this.save();
+    return user;
+  }
+
+  public getUsers() {
+    return this.data.users.map(({ password_hash, ...u }) => {
+      const client = u.client_id ? this.getClientById(u.client_id) : undefined;
+      return {
+        ...u,
+        client_name: client?.name,
+        client_company: client?.company,
+      };
+    }).sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }
+
+  public getClients(): Client[] {
+    return this.data.clients;
+  }
+
   // --- CLIENTS ---
   public getClientsWithTotals() {
     return this.data.clients.map(c => {
