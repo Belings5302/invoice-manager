@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ClientSummary, Invoice } from '../types';
+import { ClientSummary, Invoice, Job, Payment } from '../types';
 import { api } from '../utils/api';
 import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate, getStatusBadgeClass, formatStatusLabel } from '../utils/formatters';
@@ -144,7 +144,7 @@ export const ClientPortalPage: React.FC = () => {
   }
 
 
-  const { client, totals, recentInvoices, recentPayments, jobs, totalInvoicesCount, totalJobsCount, activeJobsCount } = summary;
+  const { client, totals, recentInvoices, recentPayments, jobs, totalInvoicesCount, totalJobsCount, activeJobsCount } = summary!;
   const isSettled = totals.total_outstanding <= 0;
 
   return (
@@ -298,7 +298,7 @@ export const ClientPortalPage: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {recentInvoices.map((inv) => {
+                  {recentInvoices.map((inv: Invoice) => {
                     const bal = inv.total_amount - inv.amount_paid;
                     return (
                       <tr key={inv.id}>
@@ -357,7 +357,7 @@ export const ClientPortalPage: React.FC = () => {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              {jobs.slice(0, 4).map((job) => (
+              {jobs.slice(0, 4).map((job: Job) => (
                 <div
                   key={job.id}
                   style={{
@@ -415,7 +415,7 @@ export const ClientPortalPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {recentPayments.map((p) => (
+                {recentPayments.map((p: Payment) => (
                   <tr key={p.id}>
                     <td>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
