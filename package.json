@@ -1,0 +1,15 @@
+{
+  "name": "invoice-manager",
+  "version": "1.0.0",
+  "description": "Invoice Manager - Full Stack App",
+  "scripts": {
+    "install": "cd server && npm install",
+    "build": "cd server && npm run build",
+    "start": "cd server && npm start",
+    "install:client": "cd client && npm install",
+    "build:client": "cd client && npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
