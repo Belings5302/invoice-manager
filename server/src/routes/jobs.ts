@@ -19,7 +19,7 @@ router.get('/', (req: AuthRequest, res) => {
         return res.json([]);
       }
     }
-    client_id = String(req.user.client_id);
+    client_id = String(req.user!.client_id);
   }
 
   const jobs = db.getJobs({
