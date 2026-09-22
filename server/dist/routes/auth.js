@@ -9,9 +9,11 @@ const database_1 = __importDefault(require("../db/database"));
 const auth_1 = require("../middleware/auth");
 const router = (0, express_1.Router)();
 // POST /api/auth/register
+// Creates a plain user account (role='user') with NO linked client.
+// An admin must link the user to a client from the Users management page.
 router.post('/register', async (req, res) => {
     try {
-        const { email, password, name, client_id } = req.body;
+        const { email, password, name } = req.body;
         if (!email || !password || !name) {
             return res.status(400).json({ error: 'Email, password, and name are required.' });
         }
@@ -21,12 +23,13 @@ router.post('/register', async (req, res) => {
             return res.status(409).json({ error: 'Email already registered.' });
         }
         const hash = await bcryptjs_1.default.hash(password, 10);
+        // Create user with NO client link. Admin assigns client access later.
         const user = db.createUser({
             email,
             password_hash: hash,
             name,
             role: 'user',
-            client_id: client_id ? Number(client_id) : null,
+            client_id: null,
         });
         const token = (0, auth_1.generateToken)({ id: user.id, email: user.email, name: user.name, role: user.role, client_id: user.client_id });
         res.status(201).json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role, client_id: user.client_id } });

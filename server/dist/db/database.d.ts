@@ -95,6 +95,18 @@ declare class DatabaseEngine {
     getUserById(id: number): User | undefined;
     getUserByClientId(clientId: number): User | undefined;
     createUser(user: Omit<User, 'id' | 'created_at'>): User;
+    updateUser(id: number, updates: Partial<User>): User | undefined;
+    getUsers(): {
+        client_name: string | undefined;
+        client_company: string | null | undefined;
+        id: number;
+        email: string;
+        name: string;
+        role: "admin" | "user";
+        client_id?: number | null;
+        created_at: string;
+    }[];
+    getClients(): Client[];
     getClientsWithTotals(): {
         total_invoiced: number;
         total_paid: number;

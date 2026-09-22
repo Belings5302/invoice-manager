@@ -14,7 +14,13 @@ router.get('/', (req, res) => {
     // Regular users only see their own invoices
     if (req.user?.role !== 'admin') {
         if (!req.user?.client_id) {
-            return res.json([]);
+            const freshUser = db.getUserById(req.user.id);
+            if (freshUser?.client_id) {
+                req.user.client_id = freshUser.client_id;
+            }
+            else {
+                return res.json([]);
+            }
         }
         client_id = String(req.user.client_id);
     }
