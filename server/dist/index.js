@@ -15,7 +15,8 @@ const jobs_1 = __importDefault(require("./routes/jobs"));
 const reports_1 = __importDefault(require("./routes/reports"));
 const users_1 = __importDefault(require("./routes/users"));
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 3001;
+const PORT = Number(process.env.PORT) || 3001;
+const HOST = '0.0.0.0';
 // Middleware
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -29,13 +30,20 @@ app.use('/api/expenses', auth_1.authMiddleware, auth_1.adminOnly, expenses_1.def
 app.use('/api/jobs', auth_1.authMiddleware, jobs_1.default);
 app.use('/api/reports', auth_1.authMiddleware, reports_1.default);
 app.use('/api/users', auth_1.authMiddleware, auth_1.adminOnly, users_1.default);
-// Health check
-app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+// Health check (responds to /api/health and /health)
+app.get(['/api/health', '/health'], (req, res) => {
+    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
-app.listen(PORT, () => {
-    console.log(`🚀 Invoice Manager API running on http://localhost:${PORT}`);
-    console.log(`   Health check: http://localhost:${PORT}/api/health`);
+// Process error handlers so crashes are logged
+process.on('uncaughtException', (err) => {
+    console.error('❌ Uncaught Exception:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+});
+app.listen(PORT, HOST, () => {
+    console.log(`🚀 Invoice Manager API running on http://${HOST}:${PORT}`);
+    console.log(`   Health check: http://${HOST}:${PORT}/api/health`);
     console.log(`   RBAC initialized`);
 });
 //# sourceMappingURL=index.js.map
